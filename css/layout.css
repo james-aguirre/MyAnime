@@ -3,20 +3,15 @@
 }
 
 .container {
-  max-width: 575px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
-.row,
-.row-entries {
+.row {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-}
-
-.column-full,
-.column-half {
-  width: 100%;
 }
 
 @media screen and (min-width: 768px) {
