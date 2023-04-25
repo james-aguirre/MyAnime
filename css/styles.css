@@ -1,0 +1,24 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #343a40;
+}
+
+.navbar-left {
+  color: #a7c5f1;
+  font-size: 1.2rem;
+}
+
+#navbar-icon {
+  color: white;
+  font-size: 1.8rem;
+}
+
+a {
+  text-decoration: none;
+  padding-left: 1.6rem;
+}
+
+#site-search {
+  margin-top: 0.5rem;
+}
