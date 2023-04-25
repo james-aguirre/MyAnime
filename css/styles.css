@@ -21,4 +21,18 @@ a {
 
 #site-search {
   margin-top: 0.5rem;
+  height: 1.8rem;
+  margin-bottom: 0.5rem;
+  width: 15rem;
+}
+
+#search-button {
+  color: #227bff;
+  background-color: #343a40;
+  border-style: solid;
+  border-color: #227bff;
+  border-width: 0.05rem;
+  margin-right: 1rem;
+  padding: 0.4rem;
+  border-radius: 0.2rem;
 }
