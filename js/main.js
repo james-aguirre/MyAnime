@@ -12,7 +12,7 @@ $navbarForm.addEventListener('submit', function (event) {
   event.preventDefault();
   const $search = event.target.elements.search.value;
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', `https://api.jikan.moe/v4/anime?limit=5&q=${$search}&rating=tv`);
+  xhr.open('GET', `https://api.jikan.moe/v4/anime?limit=5&q=${$search}&type=tv`);
   xhr.responseType = 'json';
   removeAllChildNodes($resultList);
   xhr.addEventListener('load', function () {
@@ -28,7 +28,7 @@ $mainForm.addEventListener('submit', function (event) {
   event.preventDefault();
   const $search = event.target.elements.homesearch.value;
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', `https://api.jikan.moe/v4/anime?limit=5&q=${$search}&rating=tv`);
+  xhr.open('GET', `https://api.jikan.moe/v4/anime?limit=5&q=${$search}&type=tv`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent($search, xhr);
