@@ -8,11 +8,47 @@
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
+    <div class="navbar-left">
+      <a href="#" id="navbar-icon">Navbar</a>
+      <a href="#">Watchlist</a>
+      <a href="#">Popular</a>
+    </div>
+    <form action="" class="navbar-form">
+      <div class="navbar-right">
+        <label for="search"></label>
+        <input type="search" id="search" placeholder="Search">
+        <button class="search-button">Search</button>
+      </div>
+    </form>
   </header>
   <main>
+    <div class="container">
+      <div data-view="search" class="main-search">
+        <div class="row">
+          <form action="" class="home-form">
+            <div class="main-search">
+              <label for="homesearch"></label>
+              <input type="search" id="homesearch" placeholder="Search anime">
+              <button class="search-button">Search</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div data-view="results" class="hidden" id="results">
+        <h2 class="results-header"></h2>
+        <ul id="result-list">
+        </ul>
+      </div>
+    </div>
   </main>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
