@@ -16,11 +16,7 @@ $navbarForm.addEventListener('submit', function (event) {
   xhr.responseType = 'json';
   removeAllChildNodes($resultList);
   xhr.addEventListener('load', function () {
-    $resultsHeader.textContent = `Search results for ${$search}`;
-    for (let i = 0; i < xhr.response.data.length; i++) {
-      $resultList.appendChild(renderEntry(xhr.response.data[i]));
-
-    }
+    switchContent($search, xhr);
   });
   $navbarForm.reset();
   viewSwap('results');
@@ -35,17 +31,20 @@ $mainForm.addEventListener('submit', function (event) {
   xhr.open('GET', `https://api.jikan.moe/v4/anime?limit=5&q=${$search}&rating=tv`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    $resultsHeader.textContent = `Search results for ${$search}`;
-    for (let i = 0; i < xhr.response.data.length; i++) {
-      $resultList.appendChild(renderEntry(xhr.response.data[i]));
-
-    }
+    switchContent($search, xhr);
   });
   $mainForm.reset();
   viewSwap('results');
   xhr.send();
-
 });
+
+function switchContent($search, xhr) {
+  $resultsHeader.textContent = `Search results for ${$search}`;
+  for (let i = 0; i < xhr.response.data.length; i++) {
+    $resultList.appendChild(renderEntry(xhr.response.data[i]));
+  }
+
+}
 
 // render entries to DOM
 function renderEntry(entry) {
@@ -62,6 +61,7 @@ function renderEntry(entry) {
 
   const $img = document.createElement('img');
   $img.src = entry.images.jpg.image_url;
+  $img.setAttribute('alt', `a picture of ${entry.title}`);
   $columnThird.appendChild($img);
 
   const $columnTwoThirds = document.createElement('div');
@@ -109,5 +109,3 @@ function removeAllChildNodes(parent) {
 $navbarIcon.addEventListener('click', function (event) {
   viewSwap('search');
 });
-
-// event listener for plus icon
