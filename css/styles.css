@@ -20,6 +20,11 @@ a {
   color: #227bff;
 }
 
+button {
+  color: white;
+  border-style: none;
+}
+
 a:hover {
   cursor: pointer;
 }
@@ -88,4 +93,36 @@ li {
 
 h2 {
   text-align: center;
+}
+
+.currently-airing {
+  background-color: #1bb55c;
+}
+
+.up-and-coming {
+  background-color: #007bff;
+  margin-left: 5rem;
+  margin-right: 5rem;
+}
+
+.by-popularity {
+  background-color: #562b81;
+}
+
+.popular-header {
+  margin-top: 4rem;
+}
+
+.top-buttons {
+  height: 4.2rem;
+  width: 11.5rem;
+  border-radius: 0.5rem;
+  margin-top: 3rem;
+  font-size: 1.3rem;
+  padding-bottom: 0.7rem;
+}
+
+i {
+  margin-top: 1.1rem;
+  padding-left: 1.5rem;
 }
