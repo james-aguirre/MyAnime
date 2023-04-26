@@ -2,10 +2,10 @@ header {
   display: flex;
   justify-content: space-between;
   background-color: #343a40;
+  height: 2.8rem;
 }
 
 .navbar-left {
-  color: #a7c5f1;
   font-size: 1.2rem;
 }
 
@@ -17,6 +17,7 @@ header {
 a {
   text-decoration: none;
   padding-left: 1.6rem;
+  color: #227bff;
 }
 
 a:hover {
@@ -45,15 +46,42 @@ button:hover {
   border-radius: 0.2rem;
 }
 
-.main-search {
-  margin-top: 2rem;
-}
-
-#site-search-main {
+#homesearch {
   width: 20rem;
   height: 1.8rem;
   border-width: 0.05rem;
   margin-right: 0.2rem;
   padding: 0.4rem;
   border-radius: 0.2rem;
+  margin-top: 3rem;
+}
+
+.column-third {
+  flex-basis: 33%;
+}
+
+.column-two-thirds {
+  flex-basis: 66%;
+}
+
+h3 {
+  display: inline-block;
+  font-size: 1rem;
+}
+
+p {
+  font-size: 0.9rem;
+}
+
+li {
+  list-style-type: none;
+}
+
+.slide-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+h2 {
+  text-align: center;
 }

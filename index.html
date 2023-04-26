@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
   <header>
@@ -16,7 +19,7 @@
       <a href="#">Watchlist</a>
       <a href="#">Popular</a>
     </div>
-    <form action="" class="form">
+    <form action="" class="navbar-form">
       <div class="navbar-right">
         <label for="search"></label>
         <input type="search" id="search" placeholder="Search">
@@ -26,19 +29,21 @@
   </header>
   <main>
     <div class="container">
-      <div class="row">
-        <form action="" class="form">
-          <div class="main-search">
-            <label for="site-search-main"></label>
-            <input type="search" id="site-search-main" placeholder="Search by name or genre">
-            <button class="search-button">Search</button>
-          </div>
-        </form>
+      <div data-view="search" class="main-search">
+        <div class="row">
+          <form action="" class="home-form">
+            <div class="main-search">
+              <label for="homesearch"></label>
+              <input type="search" id="homesearch" placeholder="Search anime by name or genre">
+              <button class="search-button">Search</button>
+            </div>
+          </form>
+        </div>
       </div>
       <div data-view="results" class="hidden" id="results">
-        <div class="row">
-
-        </div>
+        <h2 class="results-header"></h2>
+        <ul id="result-list">
+        </ul>
       </div>
     </div>
   </main>
