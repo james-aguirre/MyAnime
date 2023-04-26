@@ -97,28 +97,23 @@ h2 {
 
 .currently-airing {
   background-color: #1bb55c;
-  height: 4.2rem;
-  width: 11.5rem;
-  border-radius: 0.5rem;
-  margin-top: 3rem;
-  font-size: 1.3rem;
-  padding-bottom: 0.7rem;
 }
 
 .up-and-coming {
   background-color: #007bff;
-  height: 4.2rem;
-  width: 11.5rem;
-  border-radius: 0.5rem;
-  margin-top: 3rem;
   margin-left: 5rem;
   margin-right: 5rem;
-  font-size: 1.3rem;
-  padding-bottom: 0.7rem;
 }
 
 .by-popularity {
   background-color: #562b81;
+}
+
+.popular-header {
+  margin-top: 4rem;
+}
+
+.top-buttons {
   height: 4.2rem;
   width: 11.5rem;
   border-radius: 0.5rem;
@@ -127,6 +122,6 @@ h2 {
   padding-bottom: 0.7rem;
 }
 
-.popular-header {
-  margin-top: 4rem;
+i {
+  margin-top: 1.1rem;
 }
