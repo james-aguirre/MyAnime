@@ -20,7 +20,7 @@
     <div class="navbar-left">
       <a href="#" id="navbar-icon">Navbar</a>
       <a href="#">Watchlist</a>
-      <a href="#">Popular</a>
+      <a href="#" id="top-anime">Top anime</a>
     </div>
     <form action="" class="navbar-form">
       <div class="navbar-right">
@@ -43,6 +43,19 @@
           </form>
         </div>
       </div>
+
+      <div data-view="top" id="top" class="button-container hidden">
+        <div class="popular-header">
+          <h2>Search top shows</h2>
+        </div>
+        <div class="row">
+          <button class="currently-airing">Currently airing</button>
+          <button class="up-and-coming">Up and coming</button>
+          <button class="by-popularity">By popularity</button>
+        </div>
+      </div>
+
+
       <div data-view="results" class="hidden" id="results">
         <h2 class="results-header"></h2>
         <ul id="result-list">

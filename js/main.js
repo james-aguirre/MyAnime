@@ -6,6 +6,11 @@ const $searchPage = document.querySelector('.main-search');
 const $resultPage = document.querySelector('#results');
 const $navbarIcon = document.querySelector('#navbar-icon');
 const $resultsHeader = document.querySelector('.results-header');
+const $topPage = document.querySelector('#top');
+const $navbarTopAnime = document.querySelector('#top-anime');
+const $currentlyAiring = document.querySelector('.currently-airing');
+const $upAndComing = document.querySelector('.up-and-coming');
+const $byPopularity = document.querySelector('.by-popularity');
 
 // navbar search bar function
 $navbarForm.addEventListener('submit', function (event) {
@@ -16,7 +21,8 @@ $navbarForm.addEventListener('submit', function (event) {
   xhr.responseType = 'json';
   removeAllChildNodes($resultList);
   xhr.addEventListener('load', function () {
-    switchContent($search, xhr);
+    switchContent(xhr);
+    $resultsHeader.textContent = `Search results for ${$search}`;
   });
   $navbarForm.reset();
   viewSwap('results');
@@ -31,15 +37,58 @@ $mainForm.addEventListener('submit', function (event) {
   xhr.open('GET', `https://api.jikan.moe/v4/anime?limit=5&q=${$search}&type=tv`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    switchContent($search, xhr);
+    switchContent(xhr);
+    $resultsHeader.textContent = `Search results for ${$search}`;
   });
   $mainForm.reset();
   viewSwap('results');
   xhr.send();
 });
 
-function switchContent($search, xhr) {
-  $resultsHeader.textContent = `Search results for ${$search}`;
+// currently airing search function
+$currentlyAiring.addEventListener('click', function (event) {
+  const xhr = new XMLHttpRequest();
+  const $search = 'Top anime currently airing';
+  xhr.open('GET', 'https://api.jikan.moe/v4/top/anime?type=tv&filter=airing&limit=5');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    switchContent(xhr);
+    $resultsHeader.textContent = `${$search}`;
+    viewSwap('results');
+  });
+  xhr.send();
+});
+
+// up and coming search function
+$upAndComing.addEventListener('click', function (event) {
+  const xhr = new XMLHttpRequest();
+  const $search = 'Top upcoming anime';
+  xhr.open('GET', 'https://api.jikan.moe/v4/top/anime?type=tv&filter=upcoming&limit=5');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    switchContent(xhr);
+    $resultsHeader.textContent = `${$search}`;
+    viewSwap('results');
+  });
+  xhr.send();
+});
+
+// by popularity function
+$byPopularity.addEventListener('click', function (event) {
+  const xhr = new XMLHttpRequest();
+  const $search = 'Top anime by popularity';
+  xhr.open('GET', 'https://api.jikan.moe/v4/top/anime?type=tv&filter=bypopularity&limit=5');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    switchContent(xhr);
+    $resultsHeader.textContent = `${$search}`;
+    viewSwap('results');
+  });
+  xhr.send();
+});
+
+// for loop to render api data to page
+function switchContent(xhr) {
   for (let i = 0; i < xhr.response.data.length; i++) {
     $resultList.appendChild(renderEntry(xhr.response.data[i]));
   }
@@ -90,12 +139,20 @@ function renderEntry(entry) {
 // swap views without page reload
 function viewSwap(string) {
   if (string === 'results') {
+    $topPage.classList.add('hidden');
     $resultPage.classList.remove('hidden');
     $searchPage.classList.add('hidden');
   } else if (string === 'search') {
     $resultPage.classList.add('hidden');
     $searchPage.classList.remove('hidden');
+    $topPage.classList.add('hidden');
     removeAllChildNodes($resultList);
+  } else if (string === 'top') {
+    $resultPage.classList.add('hidden');
+    $searchPage.classList.add('hidden');
+    $topPage.classList.remove('hidden');
+    removeAllChildNodes($resultList);
+
   }
 }
 
@@ -108,4 +165,9 @@ function removeAllChildNodes(parent) {
 // to swap views to home page search bar
 $navbarIcon.addEventListener('click', function (event) {
   viewSwap('search');
+});
+
+// to swap views to top anime page
+$navbarTopAnime.addEventListener('click', function (event) {
+  viewSwap('top');
 });
