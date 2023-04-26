@@ -14,6 +14,7 @@ $navbarForm.addEventListener('submit', function (event) {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', `https://api.jikan.moe/v4/anime?limit=5&q=${$search}&rating=tv`);
   xhr.responseType = 'json';
+  removeAllChildNodes($resultList);
   xhr.addEventListener('load', function () {
     $resultsHeader.textContent = `Search results for ${$search}`;
     for (let i = 0; i < xhr.response.data.length; i++) {
@@ -45,12 +46,14 @@ $mainForm.addEventListener('submit', function (event) {
   xhr.send();
 
 });
+
+// render entries to DOM
 function renderEntry(entry) {
   const $li = document.createElement('li');
   $resultList.appendChild($li);
 
   const $row = document.createElement('div');
-  $row.className = 'row';
+  $row.classList.add('row', 'slide-container');
   $li.appendChild($row);
 
   const $columnThird = document.createElement('div');
@@ -84,6 +87,7 @@ function renderEntry(entry) {
   return $li;
 }
 
+// swap views without page reload
 function viewSwap(string) {
   if (string === 'results') {
     $resultPage.classList.remove('hidden');
