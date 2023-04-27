@@ -2,10 +2,8 @@
 
 var data = {
   view: 'search-page',
-  results: [],
-  nextResultId: 1,
-  entries: [],
-  nextEntryId: 1
+  entries: [[], []],
+  nextEntryId: 0
 };
 
 window.addEventListener('beforeunload', function (event) {

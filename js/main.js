@@ -22,6 +22,7 @@ $navbarForm.addEventListener('submit', function (event) {
   removeAllChildNodes($resultList);
   xhr.addEventListener('load', function () {
     switchContent(xhr);
+    data.entries[0].push(xhr.response.data);
     $resultsHeader.textContent = `Search results for ${$search}`;
   });
   $navbarForm.reset();
@@ -38,6 +39,7 @@ $mainForm.addEventListener('submit', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
+    data.entries[0].push(xhr.response.data);
     $resultsHeader.textContent = `Search results for ${$search}`;
   });
   $mainForm.reset();
@@ -53,6 +55,7 @@ $currentlyAiring.addEventListener('click', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
+    data.entries[0].push(xhr.response.data);
     $resultsHeader.textContent = `${$search}`;
     viewSwap('results');
   });
@@ -67,6 +70,7 @@ $upAndComing.addEventListener('click', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
+    data.entries[0].push(xhr.response.data);
     $resultsHeader.textContent = `${$search}`;
     viewSwap('results');
   });
@@ -81,6 +85,7 @@ $byPopularity.addEventListener('click', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
+    data.entries[0].push(xhr.response.data);
     $resultsHeader.textContent = `${$search}`;
     viewSwap('results');
   });
@@ -92,12 +97,13 @@ function switchContent(xhr) {
   for (let i = 0; i < xhr.response.data.length; i++) {
     $resultList.appendChild(renderEntry(xhr.response.data[i]));
   }
-
 }
 
 // render entries to DOM
 function renderEntry(entry) {
   const $li = document.createElement('li');
+  $li.setAttribute('data-entry-id', data.nextEntryId);
+  data.nextEntryId++;
   $resultList.appendChild($li);
 
   const $row = document.createElement('div');
@@ -152,7 +158,6 @@ function viewSwap(string) {
     $searchPage.classList.add('hidden');
     $topPage.classList.remove('hidden');
     removeAllChildNodes($resultList);
-
   }
 }
 
@@ -171,3 +176,15 @@ $navbarIcon.addEventListener('click', function (event) {
 $navbarTopAnime.addEventListener('click', function (event) {
   viewSwap('top');
 });
+
+// fontawesome icon eventlistener
+$resultList.addEventListener('click', function (event) {
+  if (event.target.tagName === 'I') {
+    // console.log(event.target.closest('[data-entry-id'));
+    let entryId = event.target.closest('[data-entry-id').dataset.entryId;
+    entryId = entryId / 1;
+    const newEntry = data.entries[0][0][entryId];
+    data.entries[1].unshift(newEntry);
+  }
+}
+);
