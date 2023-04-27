@@ -24,7 +24,7 @@ $navbarForm.addEventListener('submit', function (event) {
   removeAllChildNodes($resultList);
   xhr.addEventListener('load', function () {
     switchContent(xhr);
-    data.entries[0].push(xhr.response.data);
+    data.entries.push(xhr.response.data);
     $resultsHeader.textContent = `Search results for ${$search}`;
   });
   $navbarForm.reset();
@@ -41,7 +41,7 @@ $mainForm.addEventListener('submit', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
-    data.entries[0].push(xhr.response.data);
+    data.entries.push(xhr.response.data);
     $resultsHeader.textContent = `Search results for ${$search}`;
   });
   $mainForm.reset();
@@ -57,7 +57,7 @@ $currentlyAiring.addEventListener('click', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
-    data.entries[0].push(xhr.response.data);
+    data.entries.push(xhr.response.data);
     $resultsHeader.textContent = `${$search}`;
     viewSwap('results');
   });
@@ -72,7 +72,7 @@ $upAndComing.addEventListener('click', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
-    data.entries[0].push(xhr.response.data);
+    data.entries.push(xhr.response.data);
     $resultsHeader.textContent = `${$search}`;
     viewSwap('results');
   });
@@ -87,7 +87,7 @@ $byPopularity.addEventListener('click', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
-    data.entries[0].push(xhr.response.data);
+    data.entries.push(xhr.response.data);
     $resultsHeader.textContent = `${$search}`;
     viewSwap('results');
   });
@@ -156,13 +156,15 @@ function viewSwap(string) {
     $searchPage.classList.remove('hidden');
     $topPage.classList.add('hidden');
     removeAllChildNodes($resultList);
-    data.entries[0] = [];
+    data.entries = [];
+    data.nextEntryId = 0;
   } else if (string === 'top') {
     $resultPage.classList.add('hidden');
     $searchPage.classList.add('hidden');
     $topPage.classList.remove('hidden');
     removeAllChildNodes($resultList);
-    data.entries[0] = [];
+    data.entries = [];
+    data.nextEntryId = 0;
   }
 }
 
@@ -187,8 +189,8 @@ $resultList.addEventListener('click', function (event) {
   if (event.target.tagName === 'I') {
     let entryId = event.target.closest('[data-entry-id]').dataset.entryId;
     entryId = entryId / 1;
-    const newEntry = data.entries[0][0][entryId];
-    data.entries[1].unshift(newEntry);
+    const newEntry = data.entries[0][entryId];
+    data.saved.unshift(newEntry);
     // Targets Sibling above in HTML
     const $showNameModal = event.target.previousElementSibling;
     // So modal flashes briefly on screen
@@ -201,7 +203,7 @@ $resultList.addEventListener('click', function (event) {
     }, 200);
     setTimeout(() => {
       $modal.classList.add('hidden');
-    }, 3500
+    }, 3000
     );
   }
 }
