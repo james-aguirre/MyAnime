@@ -153,11 +153,13 @@ function viewSwap(string) {
     $searchPage.classList.remove('hidden');
     $topPage.classList.add('hidden');
     removeAllChildNodes($resultList);
+    data.entries[0] = [];
   } else if (string === 'top') {
     $resultPage.classList.add('hidden');
     $searchPage.classList.add('hidden');
     $topPage.classList.remove('hidden');
     removeAllChildNodes($resultList);
+    data.entries[0] = [];
   }
 }
 
