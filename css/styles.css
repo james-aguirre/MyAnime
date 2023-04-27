@@ -126,3 +126,40 @@ i {
   margin-top: 1.1rem;
   padding-left: 1.5rem;
 }
+
+i:hover {
+  cursor: pointer;
+}
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-dialogue {
+  padding: 1rem;
+  padding-bottom: 2rem;
+  color: white;
+  background-color: #292929;
+  opacity: 90%;
+  border-radius: 0.25rem;
+}
+
+.modal {
+  width: 20rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-align: center;
+}
+
+.modal-text {
+  font-size: 1.3rem;
+  display: block;
+  margin-bottom: 0;
+}

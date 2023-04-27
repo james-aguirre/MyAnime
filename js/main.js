@@ -11,6 +11,8 @@ const $navbarTopAnime = document.querySelector('#top-anime');
 const $currentlyAiring = document.querySelector('.currently-airing');
 const $upAndComing = document.querySelector('.up-and-coming');
 const $byPopularity = document.querySelector('.by-popularity');
+const $modal = document.querySelector('.modal-container');
+const $modalText = document.querySelector('.modal-text');
 
 // navbar search bar function
 $navbarForm.addEventListener('submit', function (event) {
@@ -22,6 +24,7 @@ $navbarForm.addEventListener('submit', function (event) {
   removeAllChildNodes($resultList);
   xhr.addEventListener('load', function () {
     switchContent(xhr);
+    data.entries.push(xhr.response.data);
     $resultsHeader.textContent = `Search results for ${$search}`;
   });
   $navbarForm.reset();
@@ -38,6 +41,7 @@ $mainForm.addEventListener('submit', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
+    data.entries.push(xhr.response.data);
     $resultsHeader.textContent = `Search results for ${$search}`;
   });
   $mainForm.reset();
@@ -53,6 +57,7 @@ $currentlyAiring.addEventListener('click', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
+    data.entries.push(xhr.response.data);
     $resultsHeader.textContent = `${$search}`;
     viewSwap('results');
   });
@@ -67,6 +72,7 @@ $upAndComing.addEventListener('click', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
+    data.entries.push(xhr.response.data);
     $resultsHeader.textContent = `${$search}`;
     viewSwap('results');
   });
@@ -81,6 +87,7 @@ $byPopularity.addEventListener('click', function (event) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
+    data.entries.push(xhr.response.data);
     $resultsHeader.textContent = `${$search}`;
     viewSwap('results');
   });
@@ -92,12 +99,13 @@ function switchContent(xhr) {
   for (let i = 0; i < xhr.response.data.length; i++) {
     $resultList.appendChild(renderEntry(xhr.response.data[i]));
   }
-
 }
 
 // render entries to DOM
 function renderEntry(entry) {
   const $li = document.createElement('li');
+  $li.setAttribute('data-entry-id', data.nextEntryId);
+  data.nextEntryId++;
   $resultList.appendChild($li);
 
   const $row = document.createElement('div');
@@ -124,9 +132,10 @@ function renderEntry(entry) {
   const $headerTitle = document.createElement('h3');
   $headerTitle.textContent = entry.title;
   $slideHeader.appendChild($headerTitle);
+  $headerTitle.classList.add('slide-header-title');
 
   const $fontAwesome = document.createElement('i');
-  $fontAwesome.className = 'fa-solid fa-plus';
+  $fontAwesome.className = 'fa-sharp fa-solid fa-square-plus fa-2x';
   $slideHeader.appendChild($fontAwesome);
 
   const $description = document.createElement('p');
@@ -147,12 +156,15 @@ function viewSwap(string) {
     $searchPage.classList.remove('hidden');
     $topPage.classList.add('hidden');
     removeAllChildNodes($resultList);
+    data.entries = [];
+    data.nextEntryId = 0;
   } else if (string === 'top') {
     $resultPage.classList.add('hidden');
     $searchPage.classList.add('hidden');
     $topPage.classList.remove('hidden');
     removeAllChildNodes($resultList);
-
+    data.entries = [];
+    data.nextEntryId = 0;
   }
 }
 
@@ -171,3 +183,28 @@ $navbarIcon.addEventListener('click', function (event) {
 $navbarTopAnime.addEventListener('click', function (event) {
   viewSwap('top');
 });
+
+// fontawesome icon eventlistener
+$resultList.addEventListener('click', function (event) {
+  if (event.target.tagName === 'I') {
+    let entryId = event.target.closest('[data-entry-id]').dataset.entryId;
+    entryId = entryId / 1;
+    const newEntry = data.entries[0][entryId];
+    data.saved.unshift(newEntry);
+    // Targets Sibling above in HTML
+    const $showNameModal = event.target.previousElementSibling;
+    // So modal flashes briefly on screen
+    setTimeout(() => {
+      event.target.className = 'fa-solid fa-check fa-2x modal-text';
+    });
+    setTimeout(() => {
+      $modal.classList.remove('hidden');
+      $modalText.textContent = `${$showNameModal.textContent} added to watchlist`;
+    }, 200);
+    setTimeout(() => {
+      $modal.classList.add('hidden');
+    }, 3000
+    );
+  }
+}
+);

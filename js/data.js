@@ -2,10 +2,10 @@
 
 var data = {
   view: 'search-page',
-  results: [],
-  nextResultId: 1,
   entries: [],
-  nextEntryId: 1
+  nextEntryId: 0,
+  saved: [],
+  nextSavedId: 0
 };
 
 window.addEventListener('beforeunload', function (event) {
