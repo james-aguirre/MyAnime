@@ -13,6 +13,8 @@ const $upAndComing = document.querySelector('.up-and-coming');
 const $byPopularity = document.querySelector('.by-popularity');
 const $modal = document.querySelector('.modal-container');
 const $modalText = document.querySelector('.modal-text');
+const $watchlistUl = document.querySelector('#watchlist-ul');
+const $watchlistIcon = document.querySelector('#watchlist-icon');
 
 // navbar search bar function
 $navbarForm.addEventListener('submit', function (event) {
@@ -101,6 +103,16 @@ function switchContent(xhr) {
   }
 }
 
+// for loop for watchlist page
+function watchlistContent(saved) {
+  for (let i = 0; i < data.saved.length; i++) {
+    $watchlistUl.appendChild(renderEntry(saved));
+    this.$li.setAttribute('data-saved-id', data.nextSavedId);
+    this.$img.src = saved.images.jpg.image_url;
+    this.$img.setAttribute('alt', `a picture of ${saved.title}`);
+  }
+}
+
 // render entries to DOM
 function renderEntry(entry) {
   const $li = document.createElement('li');
@@ -151,10 +163,12 @@ function viewSwap(string) {
     $topPage.classList.add('hidden');
     $resultPage.classList.remove('hidden');
     $searchPage.classList.add('hidden');
+    $watchlistUl.classList.add('hidden');
   } else if (string === 'search') {
     $resultPage.classList.add('hidden');
     $searchPage.classList.remove('hidden');
     $topPage.classList.add('hidden');
+    $watchlistUl.classList.add('hidden');
     removeAllChildNodes($resultList);
     data.entries = [];
     data.nextEntryId = 0;
@@ -162,9 +176,16 @@ function viewSwap(string) {
     $resultPage.classList.add('hidden');
     $searchPage.classList.add('hidden');
     $topPage.classList.remove('hidden');
+    $watchlistUl.classList.add('hidden');
     removeAllChildNodes($resultList);
     data.entries = [];
     data.nextEntryId = 0;
+  } else if (string === 'watchlist') {
+    $resultPage.classList.add('hidden');
+    $searchPage.classList.add('hidden');
+    $topPage.classList.add('hidden');
+    $watchlistUl.classList.remove('hidden');
+    removeAllChildNodes($resultList);
   }
 }
 
@@ -208,3 +229,8 @@ $resultList.addEventListener('click', function (event) {
   }
 }
 );
+
+$watchlistIcon.addEventListener('click', function (event) {
+  viewSwap('watchlist');
+  watchlistContent(data.saved);
+});
