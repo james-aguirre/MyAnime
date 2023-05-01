@@ -163,3 +163,7 @@ i:hover {
   display: block;
   margin-bottom: 0;
 }
+
+.no-entries {
+  text-align: center;
+}

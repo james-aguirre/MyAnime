@@ -13,6 +13,11 @@ const $upAndComing = document.querySelector('.up-and-coming');
 const $byPopularity = document.querySelector('.by-popularity');
 const $modal = document.querySelector('.modal-container');
 const $modalText = document.querySelector('.modal-text');
+const $watchlistUl = document.querySelector('#watchlist-ul');
+const $watchlistIcon = document.querySelector('#watchlist-icon');
+const $watchlistPage = document.querySelector('#watchlist');
+const $plusIcon = document.querySelector('.fa-solid');
+const $noEntries = document.querySelector('.no-entries');
 
 // navbar search bar function
 $navbarForm.addEventListener('submit', function (event) {
@@ -94,14 +99,14 @@ $byPopularity.addEventListener('click', function (event) {
   xhr.send();
 });
 
-// for loop to render api data to page
+// for loop to render api data to result page
 function switchContent(xhr) {
   for (let i = 0; i < xhr.response.data.length; i++) {
     $resultList.appendChild(renderEntry(xhr.response.data[i]));
   }
 }
 
-// render entries to DOM
+// render entries to DOM result list
 function renderEntry(entry) {
   const $li = document.createElement('li');
   $li.setAttribute('data-entry-id', data.nextEntryId);
@@ -151,24 +156,42 @@ function viewSwap(string) {
     $topPage.classList.add('hidden');
     $resultPage.classList.remove('hidden');
     $searchPage.classList.add('hidden');
+    $watchlistPage.classList.add('hidden');
+    removeAllChildNodes($watchlistUl);
   } else if (string === 'search') {
     $resultPage.classList.add('hidden');
     $searchPage.classList.remove('hidden');
     $topPage.classList.add('hidden');
+    $watchlistPage.classList.add('hidden');
     removeAllChildNodes($resultList);
+    removeAllChildNodes($watchlistUl);
     data.entries = [];
     data.nextEntryId = 0;
   } else if (string === 'top') {
     $resultPage.classList.add('hidden');
     $searchPage.classList.add('hidden');
     $topPage.classList.remove('hidden');
+    $watchlistPage.classList.add('hidden');
     removeAllChildNodes($resultList);
+    removeAllChildNodes($watchlistUl);
     data.entries = [];
     data.nextEntryId = 0;
+  } else if (string === 'watchlist') {
+    $resultPage.classList.add('hidden');
+    $searchPage.classList.add('hidden');
+    $topPage.classList.add('hidden');
+    $watchlistPage.classList.remove('hidden');
+    $plusIcon.classList.add('hidden');
+    removeAllChildNodes($resultList);
+    toggleNoEntries();
+    data.entries = [];
+    data.nextEntryId = 0;
+
   }
+  data.view = string;
 }
 
-// function to clear results page on viewSwap
+// function to clear results/watchlist page on viewSwap
 function removeAllChildNodes(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
@@ -190,7 +213,7 @@ $resultList.addEventListener('click', function (event) {
     let entryId = event.target.closest('[data-entry-id]').dataset.entryId;
     entryId = entryId / 1;
     const newEntry = data.entries[0][entryId];
-    data.saved.unshift(newEntry);
+    data.saved.push(newEntry);
     // Targets Sibling above in HTML
     const $showNameModal = event.target.previousElementSibling;
     // So modal flashes briefly on screen
@@ -203,8 +226,72 @@ $resultList.addEventListener('click', function (event) {
     }, 200);
     setTimeout(() => {
       $modal.classList.add('hidden');
-    }, 3000
+    }, 2000
     );
   }
 }
 );
+
+$watchlistIcon.addEventListener('click', function (event) {
+  viewSwap('watchlist');
+  switchWatchlist(data.saved);
+});
+
+// render entries to watchlist
+function renderWatchlist(entry) {
+  const $li = document.createElement('li');
+  $li.setAttribute('data-saved-id', data.nextSavedId);
+  data.nextSavedId++;
+  $resultList.appendChild($li);
+
+  const $row = document.createElement('div');
+  $row.classList.add('row', 'slide-container');
+  $li.appendChild($row);
+
+  const $columnThird = document.createElement('div');
+  $columnThird.className = 'column-third';
+  $row.appendChild($columnThird);
+
+  const $img = document.createElement('img');
+  $img.src = entry.images.jpg.image_url;
+  $img.setAttribute('alt', `a picture of ${entry.title}`);
+  $columnThird.appendChild($img);
+
+  const $columnTwoThirds = document.createElement('div');
+  $columnTwoThirds.className = 'column-two-thirds';
+  $row.appendChild($columnTwoThirds);
+
+  const $slideHeader = document.createElement('div');
+  $slideHeader.className = 'slide-header';
+  $columnTwoThirds.appendChild($slideHeader);
+
+  const $headerTitle = document.createElement('h3');
+  $headerTitle.textContent = entry.title;
+  $slideHeader.appendChild($headerTitle);
+  $headerTitle.classList.add('slide-header-title');
+
+  const $fontAwesome = document.createElement('i');
+  $fontAwesome.className = 'fa-solid fa-x';
+  $slideHeader.appendChild($fontAwesome);
+
+  const $description = document.createElement('p');
+  $description.textContent = entry.synopsis;
+  $columnTwoThirds.appendChild($description);
+
+  return $li;
+}
+
+function switchWatchlist(dataSaved) {
+  for (let i = 0; i < data.saved.length; i++) {
+    $watchlistUl.appendChild(renderWatchlist(data.saved[i]));
+  }
+}
+
+// to toggle no shows text if data.saved is null
+function toggleNoEntries() {
+  if (data.saved.length === 0) {
+    $noEntries.classList.remove('hidden');
+  } else {
+    $noEntries.classList.add('hidden');
+  }
+}

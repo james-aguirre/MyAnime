@@ -19,7 +19,7 @@
   <header>
     <div class="navbar-left">
       <a href="#" id="navbar-icon">Navbar</a>
-      <a href="#">Watchlist</a>
+      <a href="#" id="watchlist-icon">Watchlist</a>
       <a href="#" id="top-anime">Top anime</a>
     </div>
     <form action="" class="navbar-form">
@@ -61,8 +61,13 @@
         <ul id="result-list">
         </ul>
       </div>
+      <div data-view="watchlist" class="hidden" id="watchlist">
+        <h2 class="watchlist-header">My Watchlist</h2>
+        <p class="no-entries hidden">No shows have been added<p>
+        <ul id="watchlist-ul">
+        </ul>
+      </div>
     </div>
-
     <div class="modal-container hidden">
       <div class="modal-dialogue">
         <div class="modal">
