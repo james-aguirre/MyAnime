@@ -207,7 +207,7 @@ $navbarTopAnime.addEventListener('click', function (event) {
   viewSwap('top');
 });
 
-// fontawesome icon eventlistener
+// fontawesome plus icon eventlistener
 $resultList.addEventListener('click', function (event) {
   if (event.target.tagName === 'I') {
     let entryId = event.target.closest('[data-entry-id]').dataset.entryId;
@@ -215,14 +215,12 @@ $resultList.addEventListener('click', function (event) {
     const newEntry = data.entries[0][entryId];
     data.saved.push(newEntry);
     // Targets Sibling above in HTML
-    const $showNameModal = event.target.previousElementSibling;
+    const $showName = event.target.previousElementSibling;
     // So modal flashes briefly on screen
-    setTimeout(() => {
-      event.target.className = 'fa-solid fa-check fa-2x modal-text';
-    });
+    event.target.className = 'fa-solid fa-check fa-2x modal-text';
     setTimeout(() => {
       $modal.classList.remove('hidden');
-      $modalText.textContent = `${$showNameModal.textContent} added to watchlist`;
+      $modalText.textContent = `${$showName.textContent} added to watchlist`;
     }, 200);
     setTimeout(() => {
       $modal.classList.add('hidden');
@@ -295,3 +293,26 @@ function toggleNoEntries() {
     $noEntries.classList.add('hidden');
   }
 }
+
+// event listener for x icon on watchlist page
+$watchlistUl.addEventListener('click', function (event) {
+  if (event.target.tagName === 'I') {
+    // let savedId = event.target.closest('[data-saved-id]').dataset.savedId;
+    // savedId = savedId / 1;
+
+    // const newEntry = data.entries[0][entryId];
+    // data.saved.push(newEntry);
+    // Targets Sibling above in HTML
+    const $showName = event.target.previousElementSibling;
+    // So modal flashes briefly on screen
+    setTimeout(() => {
+      $modal.classList.remove('hidden');
+      $modalText.textContent = `${$showName.textContent} removed from watchlist`;
+    }, 200);
+    setTimeout(() => {
+      $modal.classList.add('hidden');
+    }, 2000
+    );
+  }
+}
+);
