@@ -157,14 +157,12 @@ function viewSwap(string) {
     $resultPage.classList.remove('hidden');
     $searchPage.classList.add('hidden');
     $watchlistPage.classList.add('hidden');
-    removeAllChildNodes($watchlistUl);
   } else if (string === 'search') {
     $resultPage.classList.add('hidden');
     $searchPage.classList.remove('hidden');
     $topPage.classList.add('hidden');
     $watchlistPage.classList.add('hidden');
     removeAllChildNodes($resultList);
-    removeAllChildNodes($watchlistUl);
     data.entries = [];
     data.nextEntryId = 0;
   } else if (string === 'top') {
@@ -173,7 +171,6 @@ function viewSwap(string) {
     $topPage.classList.remove('hidden');
     $watchlistPage.classList.add('hidden');
     removeAllChildNodes($resultList);
-    removeAllChildNodes($watchlistUl);
     data.entries = [];
     data.nextEntryId = 0;
   } else if (string === 'watchlist') {
@@ -191,7 +188,7 @@ function viewSwap(string) {
   data.view = string;
 }
 
-// function to clear results/watchlist page on viewSwap
+// function to clear results page on viewSwap
 function removeAllChildNodes(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
@@ -214,6 +211,7 @@ $resultList.addEventListener('click', function (event) {
     entryId = entryId / 1;
     const newEntry = data.entries[0][entryId];
     data.saved.push(newEntry);
+    $watchlistUl.append(renderWatchlist(newEntry));
     // Targets Sibling above in HTML
     const $showName = event.target.previousElementSibling;
     // So modal flashes briefly on screen
@@ -232,7 +230,6 @@ $resultList.addEventListener('click', function (event) {
 
 $watchlistIcon.addEventListener('click', function (event) {
   viewSwap('watchlist');
-  switchWatchlist(data.saved);
 });
 
 // render entries to watchlist
@@ -279,12 +276,6 @@ function renderWatchlist(entry) {
   return $li;
 }
 
-function switchWatchlist(dataSaved) {
-  for (let i = 0; i < data.saved.length; i++) {
-    $watchlistUl.appendChild(renderWatchlist(data.saved[i]));
-  }
-}
-
 // to toggle no shows text if data.saved is null
 function toggleNoEntries() {
   if (data.saved.length === 0) {
@@ -297,11 +288,16 @@ function toggleNoEntries() {
 // event listener for x icon on watchlist page
 $watchlistUl.addEventListener('click', function (event) {
   if (event.target.tagName === 'I') {
-    // let savedId = event.target.closest('[data-saved-id]').dataset.savedId;
-    // savedId = savedId / 1;
+    const savedId = event.target.closest('[data-saved-id]').dataset.savedId;
+    data.saved.splice(savedId, 1);
+    // for loop to match corresponding LI element with savedId
+    for (let i = 0; i < $watchlistUl.childNodes.length; i++) {
+      if ($watchlistUl.childNodes[i].tagName === 'LI' && $watchlistUl.childNodes[i].dataset.savedId === savedId) {
+        const deleted = $watchlistUl.childNodes[i];
+        $watchlistUl.removeChild(deleted);
+      }
 
-    // const newEntry = data.entries[0][entryId];
-    // data.saved.push(newEntry);
+    }
     // Targets Sibling above in HTML
     const $showName = event.target.previousElementSibling;
     // So modal flashes briefly on screen
@@ -314,5 +310,6 @@ $watchlistUl.addEventListener('click', function (event) {
     }, 2000
     );
   }
+  toggleNoEntries();
 }
 );
