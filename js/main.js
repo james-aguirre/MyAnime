@@ -275,11 +275,7 @@ function renderWatchlist(entry) {
 
 // to toggle no shows text if data.saved is null
 function toggleNoEntries() {
-  if (data.saved.length === 0) {
-    $noEntries.classList.remove('hidden');
-  } else {
-    $noEntries.classList.add('hidden');
-  }
+  data.saved.length === 0 ? $noEntries.classList.remove('hidden') : $noEntries.classList.add('hidden');
 }
 
 // event listener for x icon on watchlist page
