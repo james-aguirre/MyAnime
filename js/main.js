@@ -57,13 +57,12 @@ $mainForm.addEventListener('submit', function (event) {
 // currently airing search function
 $currentlyAiring.addEventListener('click', function (event) {
   const xhr = new XMLHttpRequest();
-  const $search = 'Top anime currently airing';
   xhr.open('GET', 'https://api.jikan.moe/v4/top/anime?type=tv&filter=airing&limit=5');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
     data.entries.push(xhr.response.data);
-    $resultsHeader.textContent = `${$search}`;
+    $resultsHeader.textContent = 'Top anime currently airing';
     viewSwap('results');
   });
   xhr.send();
@@ -72,13 +71,12 @@ $currentlyAiring.addEventListener('click', function (event) {
 // up and coming search function
 $upAndComing.addEventListener('click', function (event) {
   const xhr = new XMLHttpRequest();
-  const $search = 'Top upcoming anime';
   xhr.open('GET', 'https://api.jikan.moe/v4/top/anime?type=tv&filter=upcoming&limit=5');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
     data.entries.push(xhr.response.data);
-    $resultsHeader.textContent = `${$search}`;
+    $resultsHeader.textContent = 'Top upcoming anime';
     viewSwap('results');
   });
   xhr.send();
@@ -87,13 +85,12 @@ $upAndComing.addEventListener('click', function (event) {
 // by popularity function
 $byPopularity.addEventListener('click', function (event) {
   const xhr = new XMLHttpRequest();
-  const $search = 'Top anime by popularity';
   xhr.open('GET', 'https://api.jikan.moe/v4/top/anime?type=tv&filter=bypopularity&limit=5');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
     data.entries.push(xhr.response.data);
-    $resultsHeader.textContent = `${$search}`;
+    $resultsHeader.textContent = 'Top anime by popularity';
     viewSwap('results');
   });
   xhr.send();
@@ -310,6 +307,16 @@ $watchlistUl.addEventListener('click', function (event) {
     }, 2000
     );
   }
+  toggleNoEntries();
+}
+);
+
+// To render watchlist and stay on same page after refresh
+document.addEventListener('DOMContentLoaded', function (event) {
+  for (let i = 0; i < data.saved.length; i++) {
+    $watchlistUl.appendChild(renderWatchlist(data.saved[i]));
+  }
+  viewSwap(data.view);
   toggleNoEntries();
 }
 );
