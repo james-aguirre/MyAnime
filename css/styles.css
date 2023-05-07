@@ -56,7 +56,7 @@ button:hover {
 }
 
 #homesearch {
-  width: 20rem;
+  width: 17rem;
   height: 1.8rem;
   border-width: 0.05rem;
   margin-right: 0.2rem;
@@ -84,6 +84,7 @@ p {
 
 li {
   list-style-type: none;
+  margin-bottom: 1rem;
 }
 
 .slide-header {
@@ -162,8 +163,19 @@ i:hover {
   font-size: 1.3rem;
   display: block;
   margin-bottom: 0;
+  rgb(234, 207, 207)
 }
 
 .no-entries {
   text-align: center;
+}
+
+.slide-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+body {
+  background-color: #e5e5e5;
 }

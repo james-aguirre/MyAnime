@@ -57,13 +57,12 @@ $mainForm.addEventListener('submit', function (event) {
 // currently airing search function
 $currentlyAiring.addEventListener('click', function (event) {
   const xhr = new XMLHttpRequest();
-  const $search = 'Top anime currently airing';
   xhr.open('GET', 'https://api.jikan.moe/v4/top/anime?type=tv&filter=airing&limit=5');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
     data.entries.push(xhr.response.data);
-    $resultsHeader.textContent = `${$search}`;
+    $resultsHeader.textContent = 'Top anime currently airing';
     viewSwap('results');
   });
   xhr.send();
@@ -72,13 +71,12 @@ $currentlyAiring.addEventListener('click', function (event) {
 // up and coming search function
 $upAndComing.addEventListener('click', function (event) {
   const xhr = new XMLHttpRequest();
-  const $search = 'Top upcoming anime';
   xhr.open('GET', 'https://api.jikan.moe/v4/top/anime?type=tv&filter=upcoming&limit=5');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
     data.entries.push(xhr.response.data);
-    $resultsHeader.textContent = `${$search}`;
+    $resultsHeader.textContent = 'Top upcoming anime';
     viewSwap('results');
   });
   xhr.send();
@@ -87,13 +85,12 @@ $upAndComing.addEventListener('click', function (event) {
 // by popularity function
 $byPopularity.addEventListener('click', function (event) {
   const xhr = new XMLHttpRequest();
-  const $search = 'Top anime by popularity';
   xhr.open('GET', 'https://api.jikan.moe/v4/top/anime?type=tv&filter=bypopularity&limit=5');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     switchContent(xhr);
     data.entries.push(xhr.response.data);
-    $resultsHeader.textContent = `${$search}`;
+    $resultsHeader.textContent = 'Top anime by popularity';
     viewSwap('results');
   });
   xhr.send();
@@ -157,14 +154,12 @@ function viewSwap(string) {
     $resultPage.classList.remove('hidden');
     $searchPage.classList.add('hidden');
     $watchlistPage.classList.add('hidden');
-    removeAllChildNodes($watchlistUl);
   } else if (string === 'search') {
     $resultPage.classList.add('hidden');
     $searchPage.classList.remove('hidden');
     $topPage.classList.add('hidden');
     $watchlistPage.classList.add('hidden');
     removeAllChildNodes($resultList);
-    removeAllChildNodes($watchlistUl);
     data.entries = [];
     data.nextEntryId = 0;
   } else if (string === 'top') {
@@ -173,7 +168,6 @@ function viewSwap(string) {
     $topPage.classList.remove('hidden');
     $watchlistPage.classList.add('hidden');
     removeAllChildNodes($resultList);
-    removeAllChildNodes($watchlistUl);
     data.entries = [];
     data.nextEntryId = 0;
   } else if (string === 'watchlist') {
@@ -191,7 +185,7 @@ function viewSwap(string) {
   data.view = string;
 }
 
-// function to clear results/watchlist page on viewSwap
+// function to clear results page on viewSwap
 function removeAllChildNodes(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
@@ -207,22 +201,21 @@ $navbarTopAnime.addEventListener('click', function (event) {
   viewSwap('top');
 });
 
-// fontawesome icon eventlistener
+// fontawesome plus icon eventlistener
 $resultList.addEventListener('click', function (event) {
   if (event.target.tagName === 'I') {
     let entryId = event.target.closest('[data-entry-id]').dataset.entryId;
     entryId = entryId / 1;
     const newEntry = data.entries[0][entryId];
     data.saved.push(newEntry);
+    $watchlistUl.append(renderWatchlist(newEntry));
     // Targets Sibling above in HTML
-    const $showNameModal = event.target.previousElementSibling;
+    const $showName = event.target.previousElementSibling;
     // So modal flashes briefly on screen
-    setTimeout(() => {
-      event.target.className = 'fa-solid fa-check fa-2x modal-text';
-    });
+    event.target.className = 'fa-solid fa-check fa-2x modal-text';
     setTimeout(() => {
       $modal.classList.remove('hidden');
-      $modalText.textContent = `${$showNameModal.textContent} added to watchlist`;
+      $modalText.textContent = `${$showName.textContent} added to watchlist`;
     }, 200);
     setTimeout(() => {
       $modal.classList.add('hidden');
@@ -234,7 +227,6 @@ $resultList.addEventListener('click', function (event) {
 
 $watchlistIcon.addEventListener('click', function (event) {
   viewSwap('watchlist');
-  switchWatchlist(data.saved);
 });
 
 // render entries to watchlist
@@ -281,17 +273,46 @@ function renderWatchlist(entry) {
   return $li;
 }
 
-function switchWatchlist(dataSaved) {
+// to toggle no shows text if data.saved is null
+function toggleNoEntries() {
+  data.saved.length === 0 ? $noEntries.classList.remove('hidden') : $noEntries.classList.add('hidden');
+}
+
+// event listener for x icon on watchlist page
+$watchlistUl.addEventListener('click', function (event) {
+  if (event.target.tagName === 'I') {
+    const savedId = event.target.closest('[data-saved-id]').dataset.savedId;
+    data.saved.splice(savedId, 1);
+    // for loop to match corresponding LI element with savedId
+    for (let i = 0; i < $watchlistUl.childNodes.length; i++) {
+      if ($watchlistUl.childNodes[i].tagName === 'LI' && $watchlistUl.childNodes[i].dataset.savedId === savedId) {
+        const deleted = $watchlistUl.childNodes[i];
+        $watchlistUl.removeChild(deleted);
+      }
+
+    }
+    // Targets Sibling above in HTML
+    const $showName = event.target.previousElementSibling;
+    // So modal flashes briefly on screen
+    setTimeout(() => {
+      $modal.classList.remove('hidden');
+      $modalText.textContent = `${$showName.textContent} removed from watchlist`;
+    }, 200);
+    setTimeout(() => {
+      $modal.classList.add('hidden');
+    }, 2000
+    );
+  }
+  toggleNoEntries();
+}
+);
+
+// To render watchlist and stay on same page after refresh
+document.addEventListener('DOMContentLoaded', function (event) {
   for (let i = 0; i < data.saved.length; i++) {
     $watchlistUl.appendChild(renderWatchlist(data.saved[i]));
   }
+  viewSwap(data.view);
+  toggleNoEntries();
 }
-
-// to toggle no shows text if data.saved is null
-function toggleNoEntries() {
-  if (data.saved.length === 0) {
-    $noEntries.classList.remove('hidden');
-  } else {
-    $noEntries.classList.add('hidden');
-  }
-}
+);

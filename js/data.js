@@ -8,7 +8,7 @@ var data = {
   nextSavedId: 0
 };
 
-window.addEventListener('beforeunload', function (event) {
+window.addEventListener('unload', function (event) {
   const jSon = JSON.stringify(data);
   this.localStorage.setItem('javascript-local-storage', jSon);
 }
