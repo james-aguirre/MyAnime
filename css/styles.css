@@ -2,7 +2,7 @@ header {
   display: flex;
   justify-content: space-between;
   background-color: #343a40;
-  height: 2.8rem;
+  height: 3rem;
 }
 
 .navbar-left {
@@ -75,11 +75,14 @@ button:hover {
 
 h3 {
   display: inline-block;
-  font-size: 1rem;
+  font-size: 1.5rem;
+  color: white;
 }
 
 p {
   font-size: 0.9rem;
+  color: white;
+  line-height: 1.3rem;
 }
 
 li {
@@ -94,6 +97,8 @@ li {
 
 h2 {
   text-align: center;
+  font-size: 2rem;
+  color: white;
 }
 
 .currently-airing {
@@ -126,6 +131,7 @@ h2 {
 i {
   margin-top: 1.1rem;
   padding-left: 1.5rem;
+  color: #007bff;
 }
 
 i:hover {
@@ -163,7 +169,6 @@ i:hover {
   font-size: 1.3rem;
   display: block;
   margin-bottom: 0;
-  rgb(234, 207, 207)
 }
 
 .no-entries {
@@ -171,11 +176,17 @@ i:hover {
 }
 
 .slide-container {
-  background-color: white;
-  padding: 2rem;
+  background-color: rgb(97 87 87);
+  padding: 0.5rem;
   border-radius: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 body {
-  background-color: #e5e5e5;
+  background-color: #687486;
+}
+
+img {
+  border-radius: 0.5rem;
 }
